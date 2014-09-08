@@ -7,12 +7,13 @@
 ;       To assemble, first install masm32 and a good hex editor (HxD, IDA, ...)
 ;       From command line (Win 7, masm32-ml version 6.14), run:
 ;           path-to-masm\bin\ml /AT /c KEYBAZ.ASM
+;			rm KEYBAZ.COM
 ;           path-to-masm\bin\link16 KEYBAZ.obj,KEYBAZ.COM
 ;
 ;       Since exe2bin is not included in masm32, perform these steps manually:
-;           In a hex editor, remove the first 300h bits such that it starts with E9 6C
-;           Also, find bytes "02 0C 01", and replace 3 bytes following that string: 
-;           "83 E0 07" should become "25 07 00".
+;           In a hex editor, remove the first 300h bits such that the file starts with E9
+;           (? Also, find bytes "02 0C 01", and replace 3 bytes following that string: 
+;           "83 E0 07" should become "25 07 00". ?)
 ;
 ;   This code was adapted from a German QWERTZ-keyboard driver published in 1990 on 
 ;   http://www.heise.de/ct/hotline/Deutsche-Tastatur-im-Vista-DOS-Fenster-322534.html
@@ -23,20 +24,20 @@
 ;
 ;       Mini-tastaturtreiber, J. Tucht, 31.10.1990
 ;
-;	Assemblierung f¬År aufruf von der COMMAND-ebene:
+;	Assemblierung fÅr aufruf von der COMMAND-ebene:
 ;
 ;		masm keyboard;
 ;		link keyboard;
 ;		exe2bin keyboard.com
 ;
-;       Assemblierung f¬År einbindung in config.sys (wird noch kleiner)
+;       Assemblierung fÅr einbindung in config.sys (wird noch kleiner)
 ;
 ;		masm keyboard /dConfigSys;
 ;		link keyboard;
 ;		exe2bin keyboard
 ;
 ;	MASM 3.0 schluckt den /D-switch nicht (ich habe MASM 4.0).
-;       Ggf. am anfang des quelltextes 'ConfigSys EQU 1' einf¬Ågen!
+;       Ggf. am anfang des quelltextes 'ConfigSys EQU 1' einfÅgen!
 ;
 ;=============================================================================
 
@@ -49,24 +50,25 @@ CapsLockBit EQU 40h
 
     ; First, tabulate all normal (lowercase) non-alphanumeric characters
     ; Note: avoid using HEX codes for characters, since they differ depending on codepage
+	; Make sure this file is edited and saved in the codepage that you want!
 Primary MACRO
-Key 29h,'¬≤'     ; Superscript 2
+Key 29h,'˝'     ; Superscript 2
 Key 02h,'&'
-Key 03h,'√©'     ; e acute
+Key 03h,'Ç'     ; e acute
 Key 04h,'"'
 Key 05h,"'"
 Key 06h,'('
-Key 07h,'¬ß'     ; Section sign
-Key 08h,'√®'     ; e grave
+Key 07h,'ı'     ; Section sign
+Key 08h,'ä'     ; e grave
 Key 09h,'!'
-Key 0Ah,'√ß'     ; c cedilla
-Key 0Bh,'√†'     ; a grave
+Key 0Ah,'á'     ; c cedilla
+Key 0Bh,'Ö'     ; a grave
 Key 0Ch,')' 
 Key 0Dh,'-'
 Key 1Ah,'^'     ; (modifier?) circumflex
 Key 1Bh,'$'
-Key 28h,'√π'     ; u grave
-Key 2Bh,'¬µ'     ; mu - micro sign . On keycode for 102-key keyboards.
+Key 28h,'ó'     ; u grave
+Key 2Bh,'Ê'     ; mu - micro sign . On keycode for 102-key keyboards.
 Key 56h,'<'
 Key 32h,','
 Key 33h,';'
@@ -77,7 +79,7 @@ ENDM
 
     ; Now tabulate the same keys when the shift key is pressed
 Shift MACRO
-Key 29h,'¬≥'     ; Superscript 3
+Key 29h,'¸'     ; Superscript 3
 Key 02h,'1'
 Key 03h,'2'     
 Key 04h,'3'
@@ -88,12 +90,12 @@ Key 08h,'7'
 Key 09h,'8'
 Key 0Ah,'9' 
 Key 0Bh,'0'
-Key 0Ch,'¬∞'     ; Degree sign 
+Key 0Ch,'¯'     ; Degree sign 
 Key 0Dh,'_'
-Key 1Ah,'¬®'     ; trema - umlaut
+Key 1Ah,'˘'     ; trema - umlaut
 Key 1Bh,'*'
 Key 28h,'%'
-Key 2Bh,'¬£'     ; Pound sign
+Key 2Bh,'ú'     ; Pound sign
 Key 56h,'>'
 Key 32h,'?'
 Key 33h,'.'
@@ -114,12 +116,12 @@ ENDM
 ; http://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Belgian_Linux_keyboard.svg/1280px-Belgian_Linux_keyboard.svg.png
 
 CtrlAlt MACRO       ; Ctrl+Alt equals the Alt-GR combination!
-Key 29h,'¬¨'     ; Logical not-sign
+Key 29h,'™'     ; Logical not-sign
 Key 02h,'|'
 Key 03h,'@'     
 Key 04h,'#'
-Key 05h,'¬º'     ; Fraction 1/4
-Key 06h,'¬Ω'     ; Fraction 1/2
+Key 05h,'¨'     ; Fraction 1/4
+Key 06h,'´'     ; Fraction 1/2
 Key 07h,'^'     ; Non-modifier (?) caret sign 
 ;Key 08h,'{' 
 ;Key 09h,'['
@@ -128,21 +130,21 @@ Key 0Bh,'}'
 Key 0Ch,'\'     
 Key 1Ah,'['     
 Key 1Bh,']'
-Key 28h,'¬¥'     ; acute accent (modifier?)
+Key 28h,'Ô'     ; acute accent (modifier?)
 Key 2Bh,'`'     ; grave accent (modifier?)
 Key 56h,'\'
-Key 34h,'¬∑'     ; middle dot - gregorian comma
+Key 34h,'˙'     ; middle dot - gregorian comma
 Key 35h,'~'     ; tilde (modifier?)
 Key 10h,'@'
-Key 12h,'‚Ç¨'     ; Euro sign
+;Key 12h,'Ä'     ; Euro sign
 ;Key 18h,09Ch     ; lowercase oe-ligature
-Key 19h,'√û'     ; lowercase Nordic thorn
-Key 1Eh,'√¶'     ; lowercase ae-ligature
-Key 1Fh,'√ü'     ; German double-sz
+Key 19h,'Ë'     ; lowercase Nordic thorn
+Key 1Eh,'ë'     ; lowercase ae-ligature
+Key 1Fh,'·'     ; German double-sz
 ;Key 20h,0F0h     ; lowercase Nordic eth
-Key 2Ch,'¬´'     ; left double angle brackets
-Key 2Dh,'¬ª'     ; right double angle brackets
-Key 2Eh,'¬¢'     ; cent sign
+Key 2Ch,'Æ'     ; left double angle brackets
+Key 2Dh,'Ø'     ; right double angle brackets
+Key 2Eh,'Ω'     ; cent sign
 ENDM
 
 ShiftAlt MACRO          ; TODO: figure out response of AZERTY keyboard to shift-alt
@@ -154,23 +156,23 @@ CtrlShift MACRO         ; TODO: figure out response of AZERTY keyboard to ctrl-s
 ENDM
 
 CtrlShiftAlt MACRO      ; This equals AltGR-Shift.
-Key 02h,'¬°'     ; Inverted exclamation mark
-Key 04h,'¬£'     ; Pound sign
+Key 02h,'≠'     ; Inverted exclamation mark
+Key 04h,'ú'     ; Pound sign
 Key 05h,'$'     
 ;Key 09h,099h     ; TM-trademark sign
-Key 0Ah,'¬±'     ; plus-minus sign 
-Key 0Bh,'¬∞'     ; Degree sign
-Key 0Ch,'¬ø'     ; Inverted question mark     
-Key 33h,'√ó'     ; Multiplication sign
-Key 34h,'√∑'     ; Division sign
-Key 12h,'¬¢'     ; Cent sign
-Key 13h,'¬Æ'     ; R-registered trademark sign
-Key 15h,'¬•'     ; Yen sign
+Key 0Ah,'Ò'     ; plus-minus sign 
+Key 0Bh,'¯'     ; Degree sign
+Key 0Ch,'®'     ; Inverted question mark     
+Key 33h,'û'     ; Multiplication sign
+Key 34h,'ˆ'     ; Division sign
+Key 12h,'Ω'     ; Cent sign
+Key 13h,'©'     ; R-registered trademark sign
+Key 15h,'æ'     ; Yen sign
 ;Key 18h,08Ch     ; uppercase oe-ligature
-Key 19h,'√æ'     ; uppercase Nordic thorn
-Key 1Eh,'√Ü'     ; uppercase ae-ligature
+Key 19h,'Á'     ; uppercase Nordic thorn
+Key 1Eh,'í'     ; uppercase ae-ligature
 ;Key 20h,0D0h     ; uppercase Nordic eth
-;Key 2Eh,0A9h     ; C-copyright sign
+Key 2Eh,'∏'     ; C-copyright sign
 ENDM
 
 
@@ -475,7 +477,7 @@ Install:              MOV  DX,OFFSET OkMsg
                       ENDIF
 ;-----------------------------------------------------------------------------
 
-OkMsg                 DB 13,10,'AZERTY driver loaded, (c) Joachim Ganseman'
+OkMsg                 DB 13,10,'AZERTY driver loaded, ∏ Joachim Ganseman'
                       DB 13,10,'$'
 
 CODE                  ENDS

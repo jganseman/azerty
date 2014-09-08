@@ -16,3 +16,8 @@ Building
 --------
 
 You will need the MASM32 toolkit and a decent Hex editor to build this driver from the code. Instructions can be found in the .ASM file.
+
+Usage
+-----
+
+Just run the .com file as if it were an executable. Make sure the codepage is set to 850 (DOS-Latin1), eventually by running "mode con cp select=850" first.
