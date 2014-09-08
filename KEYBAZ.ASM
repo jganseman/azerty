@@ -50,23 +50,23 @@ CapsLockBit EQU 40h
     ; First, tabulate all normal (lowercase) non-alphanumeric characters
     ; Note: avoid using HEX codes for characters, since they differ depending on codepage
 Primary MACRO
-Key 29h,0B2h     ; Superscript 2
+Key 29h,'²'     ; Superscript 2
 Key 02h,'&'
-Key 03h,0E9h     ; e acute
+Key 03h,'é'     ; e acute
 Key 04h,'"'
 Key 05h,"'"
 Key 06h,'('
-Key 07h,0A7h     ; Section sign
-Key 08h,0E8h     ; e grave
+Key 07h,'§'     ; Section sign
+Key 08h,'è'     ; e grave
 Key 09h,'!'
-Key 0Ah,0E7h     ; c cedilla
-Key 0Bh,0E0h     ; a grave
+Key 0Ah,'ç'     ; c cedilla
+Key 0Bh,'à'     ; a grave
 Key 0Ch,')' 
 Key 0Dh,'-'
-Key 1Ah,088h     ; modifier (!) circumflex
+Key 1Ah,'^'     ; (modifier?) circumflex
 Key 1Bh,'$'
-Key 28h,0F9h     ; u grave
-Key 2Bh,0B5h     ; mu - micro sign . On keycode for 102-key keyboards.
+Key 28h,'ù'     ; u grave
+Key 2Bh,'µ'     ; mu - micro sign . On keycode for 102-key keyboards.
 Key 56h,'<'
 Key 32h,','
 Key 33h,';'
@@ -77,7 +77,7 @@ ENDM
 
     ; Now tabulate the same keys when the shift key is pressed
 Shift MACRO
-Key 29h,0B3h     ; Superscript 3
+Key 29h,'³'     ; Superscript 3
 Key 02h,'1'
 Key 03h,'2'     
 Key 04h,'3'
@@ -88,12 +88,12 @@ Key 08h,'7'
 Key 09h,'8'
 Key 0Ah,'9' 
 Key 0Bh,'0'
-Key 0Ch,0B0h     ; Degree sign 
+Key 0Ch,'°'     ; Degree sign 
 Key 0Dh,'_'
-Key 1Ah,0A8h     ; trema - umlaut
+Key 1Ah,'¨'     ; trema - umlaut
 Key 1Bh,'*'
 Key 28h,'%'
-Key 2Bh,0A3h     ; Pound sign
+Key 2Bh,'£'     ; Pound sign
 Key 56h,'>'
 Key 32h,'?'
 Key 33h,'.'
@@ -114,35 +114,35 @@ ENDM
 ; http://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Belgian_Linux_keyboard.svg/1280px-Belgian_Linux_keyboard.svg.png
 
 CtrlAlt MACRO       ; Ctrl+Alt equals the Alt-GR combination!
-Key 29h,0ACh     ; Logical not-sign
+Key 29h,'¬'     ; Logical not-sign
 Key 02h,'|'
 Key 03h,'@'     
 Key 04h,'#'
-Key 05h,0BCh     ; Fraction 1/4
-Key 06h,0BDh     ; Fraction 1/2
-Key 07h,'^'     ; Non-modifier caret sign 
-Key 08h,'{' 
-Key 09h,'['
+Key 05h,'¼'     ; Fraction 1/4
+Key 06h,'½'     ; Fraction 1/2
+Key 07h,'^'     ; Non-modifier (?) caret sign 
+;Key 08h,'{' 
+;Key 09h,'['
 Key 0Ah,'{' 
 Key 0Bh,'}'
 Key 0Ch,'\'     
 Key 1Ah,'['     
 Key 1Bh,']'
-Key 28h,092h     ; acute accent
-Key 2Bh,091h     ; grave accent
+Key 28h,'´'     ; acute accent (modifier?)
+Key 2Bh,'`'     ; grave accent (modifier?)
 Key 56h,'\'
-Key 34h,0B7h     ; middle dot - gregorian comma
-Key 35h,098h     ; Small tilde (modifier?)
+Key 34h,'·'     ; middle dot - gregorian comma
+Key 35h,'~'     ; tilde (modifier?)
 Key 10h,'@'
-Key 12h,080h     ; Euro sign
-Key 18h,09Ch     ; lowercase oe-ligature
-Key 19h,0FEh     ; lowercase Nordic thorn
-Key 1Eh,0E6h     ; lowercase ae-ligature
-Key 1Fh,0DFh     ; German double-sz
-Key 20h,0F0h     ; lowercase Nordic eth
-Key 2Ch,0ABh     ; left double angle brackets
-Key 2Dh,0BBh     ; right double angle brackets
-Key 2Eh,0A2h     ; cent sign
+Key 12h,'€'     ; Euro sign
+;Key 18h,09Ch     ; lowercase oe-ligature
+Key 19h,'Þ'     ; lowercase Nordic thorn
+Key 1Eh,'æ'     ; lowercase ae-ligature
+Key 1Fh,'ß'     ; German double-sz
+;Key 20h,0F0h     ; lowercase Nordic eth
+Key 2Ch,'«'     ; left double angle brackets
+Key 2Dh,'»'     ; right double angle brackets
+Key 2Eh,'¢'     ; cent sign
 ENDM
 
 ShiftAlt MACRO          ; TODO: figure out response of AZERTY keyboard to shift-alt
@@ -154,23 +154,23 @@ CtrlShift MACRO         ; TODO: figure out response of AZERTY keyboard to ctrl-s
 ENDM
 
 CtrlShiftAlt MACRO      ; This equals AltGR-Shift.
-Key 02h,0A1h     ; Inverted exclamation mark
-Key 04h,0A3h     ; Pound sign
+Key 02h,'¡'     ; Inverted exclamation mark
+Key 04h,'£'     ; Pound sign
 Key 05h,'$'     
-Key 09h,099h     ; TM-trademark sign
-Key 0Ah,0B1h     ; plus-minus sign 
-Key 0Bh,0B0h     ; Degree sign
-Key 0Ch,0BFh     ; Inverted question mark     
-Key 33h,0D7h     ; Multiplication sign
-Key 34h,0F7h     ; Division sign
-Key 12h,0A2h     ; Cent sign
-Key 13h,0AEh     ; R-registered trademark sign
-Key 15h,0A5h     ; Yen sign
-Key 18h,08Ch     ; uppercase oe-ligature
-Key 19h,0DEh     ; uppercase Nordic thorn
-Key 1Eh,0C6h     ; uppercase ae-ligature
-Key 20h,0D0h     ; uppercase Nordic eth
-Key 2Eh,0A9h     ; C-copyright sign
+;Key 09h,099h     ; TM-trademark sign
+Key 0Ah,'±'     ; plus-minus sign 
+Key 0Bh,'°'     ; Degree sign
+Key 0Ch,'¿'     ; Inverted question mark     
+Key 33h,'×'     ; Multiplication sign
+Key 34h,'÷'     ; Division sign
+Key 12h,'¢'     ; Cent sign
+Key 13h,'®'     ; R-registered trademark sign
+Key 15h,'¥'     ; Yen sign
+;Key 18h,08Ch     ; uppercase oe-ligature
+Key 19h,'þ'     ; uppercase Nordic thorn
+Key 1Eh,'Æ'     ; uppercase ae-ligature
+;Key 20h,0D0h     ; uppercase Nordic eth
+;Key 2Eh,0A9h     ; C-copyright sign
 ENDM
 
 
@@ -475,7 +475,7 @@ Install:              MOV  DX,OFFSET OkMsg
                       ENDIF
 ;-----------------------------------------------------------------------------
 
-OkMsg                 DB 13,10,'AZERTY driver Loaded, (c) Joachim Ganseman'
+OkMsg                 DB 13,10,'AZERTY driver loaded, (c) Joachim Ganseman'
                       DB 13,10,'$'
 
 CODE                  ENDS
