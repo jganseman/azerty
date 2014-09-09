@@ -20,4 +20,15 @@ You will need the MASM32 toolkit and a decent Hex editor to build this driver fr
 Usage
 -----
 
-Just run the .com file as if it were an executable. Make sure the codepage is set to 850 (DOS-Latin1), eventually by running "mode con cp select=850" first.
+Just run the .com file in the Windows command line as if it were an executable. Make sure the codepage is set to 850 (DOS-Latin1), eventually by running "mode con cp select=850" first.
+
+Known issues
+------------
+
+- Acute, grave and caret accents are now active keys, not dead keys (i.e. there is no waiting for the next characters, instead they produce the accents on their own). It is therefore not possible to type É or È in capital letters, or any other accented character than those available on the Azerty keyboard. 
+- Nothing much is done with the Alt+Shift or Ctrl+Shift possibilities for the moment, though they seem to give some result in the NTVDM giving access to more exotic characters of the codepage. Maybe I'll figure it out in the future.
+
+Credits
+-------
+
+Many thanks go to J. Tucht who wrote the QWERTZ driver on which this AZERTY driver is based.
